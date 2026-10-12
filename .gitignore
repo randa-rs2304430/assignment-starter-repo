@@ -185,3 +185,16 @@ cython_debug/
 
 # Built Visual Studio Code Extensions
 *.vsix
+
+
+# DuckDB and DuckLake generated files
+*.duckdb
+*.duckdb.wal
+*.duckdb.tmp/
+lakehouse_data/
+
+# Jupyter temporary files
+.ipynb_checkpoints/
+
+# Python cache
+__pycache__/
