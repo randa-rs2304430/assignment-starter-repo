@@ -1,120 +1,42 @@
 # Assignment 1 — Hotel Booking Data Pipeline
 
-## Project Overview
-
-This project implements an end-to-end data engineering pipeline using Python, DuckDB, and DuckLake. It processes hotel booking data using the Medallion Architecture (Bronze, Silver, and Gold layers).
-
-The objective is to transform raw hotel booking records into clean, structured datasets suitable for business analysis.
+CMPS 360: Hands-on Data Engineering
 
 ## Dataset
+Hotel Booking Demand dataset, accompanying the research article:
+https://pmc.ncbi.nlm.nih.gov/articles/PMC6297060/
 
-**Dataset Name:** Hotel Booking Demand Dataset
+Two original CSV files are used: `H1.csv` (Resort Hotel, 40,060 records) and `H2.csv` (City Hotel, 79,330 records). Each source file contains 31 original columns. The notebook combines these records for a total of 119,390 input rows.
 
-**Source:** [Hotel Booking Demand Research Article](https://pmc.ncbi.nlm.nih.gov/articles/PMC6297060/)
-
-**Files:**
-
-- H1.csv — Resort Hotel bookings (40,060 records)
-- H2.csv — City Hotel bookings (79,330 records)
-
-**Total Records:** 119,390
-
-The dataset contains hotel reservation information, including booking cancellations, lead time, arrival dates, room rates, and market segments.
-
-## Technologies Used
-
-- Python 3.12
-- Pandas
-- DuckDB
-- DuckLake
-- Matplotlib
-- NumPy
-- Jupyter Notebook
-- Visual Studio Code
-
-## Pipeline Architecture
-
-### Bronze Layer — Raw Data Ingestion
-
-The Bronze layer stores raw hotel booking records from both CSV files.
-
-- Total ingested records: 119,390
-- Preserves original source information
-- Tracks source file names, row numbers, and ingestion metadata
-
-### Silver Layer — Data Cleaning
-
-The Silver layer performs data validation and cleaning.
-
-- Clean records: 119,209
-- Quarantined records: 181
-- Validates booking information and numerical values
-- Separates invalid records from clean data
-
-### Gold Layer — Dimensional Modeling
-
-The Gold layer organizes clean records into a dimensional model for analytical queries.
-
-- Fact table: `fact_bookings`
-- Hotel dimension: `dim_hotel`
-- Date dimension: `dim_date`
-- Market segment dimension: `dim_market_segment`
-- Total fact records: 119,209
-
-## Analytical Queries
-
-### Query 1: Hotel Cancellation Rates
-
-City Hotels have a cancellation rate of 41.79%, while Resort Hotels have a cancellation rate of 27.77%.
-
-### Query 2: Average Daily Rate by Month
-
-Monthly average daily rates vary between hotel types. Resort Hotels show particularly high average daily rates during July and August.
-
-### Query 3: Market Segment Analysis
-
-Online travel agencies represent the largest booking segment, accounting for 47.32% of all bookings.
-
-### Query 4: Booking Lead Time Analysis
-
-Canceled bookings have longer average lead times than non-canceled bookings for both hotel types.
-
-## Data Quality and Validation
-
-The pipeline validates record counts and data integrity.
-
-| Layer       | Records |
-| ----------- | ------: |
-| Bronze      | 119,390 |
-| Silver      | 119,209 |
-| Quarantined |     181 |
-| Gold        | 119,209 |
-
-All final record-count reconciliation checks passed.
-
-## Project Structure
-
-```text
+## Project structure
+```
 assign1/
-├── data/
-│   └── raw/
-│       ├── H1.csv
-│       └── H2.csv
-├── assign1.ipynb
-└── README.md
+  assign1.ipynb
+  README.md
+  data/
+    raw/
+      H1.csv
+      H2.csv
 ```
 
-The pipeline also creates local DuckDB database files and DuckLake storage.
+## Setup and execution
+1. Install Python and the packages `pandas`, `duckdb`, `matplotlib`, `numpy`, `ipykernel`, and `jupyter`.
+2. Open the `assign1` directory in VS Code, and select a Python notebook kernel.
+3. Ensure both CSV files are in `data/raw/` relative to the notebook.
+4. Run **Restart Kernel and Run All Cells**, from top to bottom.
+5. Check Bronze/Silver/Gold counts, quarantine report, integrity tests, four query result tables, and four charts.
+6. Save the executed notebook before committing to GitHub.
 
-## How to Run
+The notebook uses DuckDB and DuckLake; the first run may need internet access to install the DuckLake extension. DuckDB database files and DuckLake storage are generated locally.
 
-1. Install Python and the required packages.
-2. Open `assign1.ipynb` in VS Code.
-3. Select a Python kernel with the required dependencies installed.
-4. Ensure `H1.csv` and `H2.csv` are available in `data/raw/`.
-5. Run all notebook cells in order.
-6. Review the validation results and analytical visualizations.
+## Analytical questions
+1. How do cancellation rates compare between Resort and City Hotels?
+2. How do average daily rates vary across arrival months by hotel type?
+3. Which market segments have the most bookings?
+4. How does lead time differ between canceled and non-canceled bookings across hotel types?
 
-## Conclusion
+## Known limitations
+The historical dataset covers two hotels and is not representative of every hotel or current demand. Source files do not include a guaranteed unique booking ID; the pipeline retains file and row identifiers for lineage. The proposed recurring ingestion approach is a design, not a live scheduled service.
 
-This project demonstrates how a Medallion Architecture pipeline can transform raw hotel booking data into structured analytical information. DuckDB and DuckLake support data ingestion, cleaning, dimensional modeling, and business analysis.
+## AI and external sources
+Dataset: Hotel Booking Demand research article linked above. AI assistance was used to review rubric coverage and draft portions of documentation, the diagram description, and reflection. Review this statement for accuracy and comply with the course's academic-integrity policy.
