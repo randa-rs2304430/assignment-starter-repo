@@ -1,42 +1,49 @@
-# Assignment 1 — Hotel Booking Data Pipeline
+# CMPS360 Assignment 1 — Hotel Booking Data Pipeline
 
-CMPS 360: Hands-on Data Engineering
+## Modular execution order
 
 ## Dataset
-Hotel Booking Demand dataset, accompanying the research article:
-https://pmc.ncbi.nlm.nih.gov/articles/PMC6297060/
 
-Two original CSV files are used: `H1.csv` (Resort Hotel, 40,060 records) and `H2.csv` (City Hotel, 79,330 records). Each source file contains 31 original columns. The notebook combines these records for a total of 119,390 input rows.
+**Dataset name:** Hotel Booking Demand
 
-## Project structure
-```
-assign1/
-  assign1.ipynb
-  README.md
-  data/
-    raw/
-      H1.csv
-      H2.csv
-```
+**Dataset source (provided by the instructor):**
+https://pmc.ncbi.nlm.nih.gov/articles/PMC6297060/?#s0020
 
-## Setup and execution
-1. Install Python and the packages `pandas`, `duckdb`, `matplotlib`, `numpy`, `ipykernel`, and `jupyter`.
-2. Open the `assign1` directory in VS Code, and select a Python notebook kernel.
-3. Ensure both CSV files are in `data/raw/` relative to the notebook.
-4. Run **Restart Kernel and Run All Cells**, from top to bottom.
-5. Check Bronze/Silver/Gold counts, quarantine report, integrity tests, four query result tables, and four charts.
-6. Save the executed notebook before committing to GitHub.
+**Access date:** October 14, 2026 (verify this is the date you accessed the link).
 
-The notebook uses DuckDB and DuckLake; the first run may need internet access to install the DuckLake extension. DuckDB database files and DuckLake storage are generated locally.
+The dataset contains two CSV files:
 
-## Analytical questions
-1. How do cancellation rates compare between Resort and City Hotels?
-2. How do average daily rates vary across arrival months by hotel type?
-3. Which market segments have the most bookings?
-4. How does lead time differ between canceled and non-canceled bookings across hotel types?
+- `H1.csv` — 40,060 rows
+- `H2.csv` — 79,330 rows
 
-## Known limitations
-The historical dataset covers two hotels and is not representative of every hotel or current demand. Source files do not include a guaranteed unique booking ID; the pipeline retains file and row identifiers for lineage. The proposed recurring ingestion approach is a design, not a live scheduled service.
+Each file contains 31 source columns, giving a total of 119,390 records.
 
-## AI and external sources
-Dataset: Hotel Booking Demand research article linked above. AI assistance was used to review rubric coverage and draft portions of documentation, the diagram description, and reflection. Review this statement for accuracy and comply with the course's academic-integrity policy.
+The dataset files are not uploaded to GitHub, following the instructor's instructions.
+
+**To reproduce the project:** Obtain `H1.csv` and `H2.csv` using the instructor-provided dataset source and place both files inside `assign1/data/raw/` before running the notebooks.
+
+Open the `assign1` directory in VS Code and run the following notebooks **in order**, from top to bottom, saving the outputs of each before proceeding:
+
+1. `01_dataset_and_strategy.ipynb` — inspect source data, document questions and ingestion design.
+2. `02_bronze.ipynb` — connect to DuckDB/DuckLake and ingest raw data with provenance.
+3. `03_silver.ipynb` — validate, quarantine, clean, and report data quality.
+4. `04_gold.ipynb` — create dimensions and fact table, show the star schema, validate keys.
+5. `05_analytics_and_reflection.ipynb` — four Gold-only SQL analyses, saved result tables, optional charts, and reflection.
+
+Each notebook has its own kernel; the Bronze, Silver, and Gold tables persist in the DuckLake catalog between notebooks. **Do not run notebooks simultaneously** against the same local database. The file `star_schema.png` is used by the Gold notebook.
+
+## Setup
+
+Install Python, Jupyter support, and packages with `python -m pip install pandas duckdb matplotlib numpy ipykernel jupyter`. Run notebooks with the working directory set to `assign1` so relative paths resolve. The first DuckLake installation may require internet access. Database and DuckLake data files are generated locally.
+
+## Expected quality reconciliation (from saved original run)
+
+Bronze 119,390 rows; Silver 119,209 rows; quarantine 181 rows. Re-run to verify these counts. The data contains no guaranteed source booking ID; lineage uses file, load ID, and source row number.
+
+## Limitations
+
+Historical observations from only two hotels; not representative of every hotel or present-day demand. Incremental batch updates are proposed but not implemented as a live scheduled ingestion service. All five modular notebooks have been executed in sequence, and their outputs have been saved.
+
+## Acknowledgements
+
+Dataset source is linked above. AI assistance was used to review rubric coverage and prepare documentation, a schema diagram, a reflection draft, and a modular reorganization of the existing notebook. Review the acknowledgement for accuracy and comply with course policy.

@@ -1,0 +1,6 @@
+data/raw/*.csv
+*.duckdb
+*.duckdb.*
+lakehouse_data/
+.ipynb_checkpoints/
+__pycache__/
